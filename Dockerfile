@@ -1,7 +1,7 @@
 FROM ubuntu:latest
 
 # Reference - https://runnable.com/docker/python/dockerize-your-flask-application
-MAINTANER Doug Morand "dmorand@gmail.com"
+MAINTAINER Doug Morand "dmorand@gmail.com"
 
 RUN apt-get update -y && \
     apt-get install -y python-pip python-dev

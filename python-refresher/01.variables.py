@@ -9,6 +9,7 @@ single_quotes = 'strings can have single quotes'
 print(string_variable)
 print(my_variable)
 
+# methods 
 
 def my_print_method(my_parameter):
     print(my_parameter)
