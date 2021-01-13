@@ -1,5 +1,7 @@
 Rest APIs with Flask Udemy Training
 
+[Source code from Udemy course](https://github.com/tecladocode/python-refresher)
+
 ## Rest-api-sections
 [Section code](https://github.com/schoolofcode-me/rest-api-sections)
 
