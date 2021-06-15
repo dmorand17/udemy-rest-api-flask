@@ -2,6 +2,20 @@ Rest APIs with Flask Udemy Training
 
 [Source code from Udemy course](https://github.com/tecladocode/python-refresher)
 
+## Docker
+### Build image
+```bash
+docker build --build-arg=start_dir=section4 -t udemy-rest-api .
+```
+
+### Run image
+```bash
+docker run -e WS_PORT=8080 --env-file=.env -p 5050:8080 udemy-rest-api
+```
+### Run image (testing)
+```bash
+docker run -it udemy-rest-api /bin/bash
+```
 ## Rest-api-sections
 [Section code](https://github.com/schoolofcode-me/rest-api-sections)
 
