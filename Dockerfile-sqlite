@@ -16,7 +16,7 @@ WORKDIR /app
 RUN pip3 install -r requirements.txt
 COPY ${start_dir} /app
 
-# Use ENTRYPOINT to lock down the image to python only
+# Use ENTRYPOINT to lock down the image to python only 
 # ENTRYPOINT ["/bin/echo","Hello"]
 # CMD ["World"]
 

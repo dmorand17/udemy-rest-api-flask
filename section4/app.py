@@ -4,20 +4,17 @@ from flask_jwt import JWT, jwt_required
 from security import authenticate, identity
 import os
 
+DEFAULT_PORT = 5050
+
 app = Flask(__name__)
 app.secret_key = os.environ.get("JWT_SECRET", "jose")
 
-# Debugging
-print("secret: {}".format(app.secret_key))
-
 api = Api(app)
-
 jwt = JWT(app, authenticate, identity)  # new endpont '/auth'
 # Requires Authorization header
 #   JWT <token>
 
 items = []
-
 
 class Item(Resource):
     parser = reqparse.RequestParser()
@@ -64,13 +61,11 @@ class ItemList(Resource):
     def get(self):
         return {"items": items}, 200
 
-
 # API Endpoints
 api.add_resource(Item, "/item/<string:name>")
 api.add_resource(ItemList, "/items")
 
 # Server run
 if __name__ == "__main__":
-    DEFAULT_PORT = 5050
     port = os.environ.get("WS_PORT", DEFAULT_PORT)
     app.run(port=port, host='0.0.0.0', debug=True)
