@@ -5,7 +5,6 @@ from app_logging import AppLogger
 
 logger = AppLogger(__name__).get_logger()
 
-
 class User:
     def __init__(self, _id, username, password):
         self.id = _id
@@ -14,23 +13,21 @@ class User:
 
     @classmethod
     def find_by_username(cls, username):
-        with DbConnection as db:
+        with DbConnection() as db:
             query = "SELECT * FROM users WHERE username = ?"
-            logger("Finding user...")
             result = db.cursor.execute(query, (username,))
             row = result.fetchone()
-            logger("row {}".format(row))
             if row:
                 user = cls(*row)
             else:
-                logger("No user found!")
+                logger.error("No user found!")
                 user = None
 
             return user
 
     @classmethod
     def find_by_id(cls, _id):
-        with DbConnection as db:
+        with DbConnection() as db:
             query = "SELECT * FROM users WHERE id = ?"
 
             result = db.cursor.execute(query, (_id,))
@@ -57,7 +54,7 @@ class UserRegister(Resource):
         if User.find_by_username(data["username"]):
             return {"message": "User already exists"}, 409
 
-        with DbConnection as db:
+        with DbConnection() as db:
             query = "INSERT INTO users VALUES (NULL, ?, ?)"
             db.cursor.execute(query, (data["username"], data["password"]))
             return {"message": "User created successfully"}, 201

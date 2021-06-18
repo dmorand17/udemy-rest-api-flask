@@ -9,11 +9,10 @@ DEFAULT_DB = "data.db"
 DATABASE = ConfigManager.get("database", DEFAULT_DB)
 logger = AppLogger(__name__).get_logger()
 
-
 class DbInit:
     @staticmethod
     def users():
-        with DbConnection as db:
+        with DbConnection() as db:
             logger.info("Initializing users")
             create_table = "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, username text, password text)"  # INTEGER PRIMARY KEY allows Auto incrementing id
             db.cursor.execute(create_table)

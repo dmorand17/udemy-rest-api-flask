@@ -55,7 +55,6 @@ class AppLogger:
         }
 
         for handler in self.handlers:
-            print("Adding {}".format(handler))
             self.logger.addHandler(handlers.get(handler)())
 
     def set_log_level(self, log_level):
