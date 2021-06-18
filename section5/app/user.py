@@ -1,5 +1,5 @@
 from typing import Text
-from db import DbConnection
+from connection.db import DbConnection
 from flask_restful import Resource, reqparse
 from app_logging import AppLogger
 

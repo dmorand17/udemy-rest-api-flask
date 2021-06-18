@@ -11,9 +11,9 @@ class LogHandler(Enum):
 
 
 DEFAULT_FORMATTER = logging.Formatter(
-    "%(asctime)s — %(module)s — %(name)s - %(levelname)s — %(message)s"
+    "%(asctime)s — %(name)20s - %(levelname)s — %(message)s"
 )
-DEFAULT_LOG_FILE = "app.log"
+DEFAULT_LOG_FILE = "logs/app.log"
 DEFAULT_HANDLERS = [LogHandler.FILE, LogHandler.CONSOLE]
 
 

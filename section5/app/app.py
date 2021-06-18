@@ -5,6 +5,7 @@ from security import authenticate, identity
 from user import UserRegister
 from app_logging import AppLogger
 from config_manager import ConfigManager
+from connection.db import DbInit
 import os
 
 DEFAULT_PORT = 5050
@@ -19,7 +20,6 @@ jwt = JWT(app, authenticate, identity)  # new endpont '/auth'
 #   JWT <token>
 
 items = []
-
 
 class Item(Resource):
     parser = reqparse.RequestParser()
@@ -74,5 +74,11 @@ api.add_resource(UserRegister, "/register")
 
 # Server run
 if __name__ == "__main__":
+    ConfigManager.print_config()
+    init_database = ConfigManager.get("init_database", False)
+    if init_database:
+        logger.info("init_database is True")
+        DbInit.users()
+
     port = os.environ.get("WS_PORT", DEFAULT_PORT)
     app.run(port=port, host="0.0.0.0", debug=True)

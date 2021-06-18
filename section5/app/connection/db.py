@@ -2,12 +2,21 @@ import sqlite3
 import argparse
 from app_logging import AppLogger
 from config_manager import ConfigManager
+from utils import AppUtils
 import sys
+import os
 import yaml
 
-DEFAULT_DB = "data.db"
-DATABASE = ConfigManager.get("database", DEFAULT_DB)
 logger = AppLogger(__name__).get_logger()
+
+DEFAULT_DB = "resources/data.db"
+DATABASE = os.getcwd() + "/" + ConfigManager.get("database", DEFAULT_DB)
+
+if not AppUtils.path_exists(DATABASE):
+    logger.error("Unable to resolve database at {}, exiting.".format(DATABASE))
+    sys.exit(1)
+else:
+    logger.info("Database resolved: {}".format(DATABASE))
 
 class DbInit:
     @staticmethod
@@ -30,7 +39,6 @@ class DbConnection:
     def __enter__(self):
         self.connection = sqlite3.connect(self.db_file)
         self.cursor = self.connection.cursor()
-        logger.info("Establishing database connection")
         return self
 
     def __exit__(self, ext_type, exc_value, traceback):
@@ -40,8 +48,6 @@ class DbConnection:
         else:
             self.connection.commit()
         self.connection.close()
-        logger.info("Database connection closed")
-
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Database utility")

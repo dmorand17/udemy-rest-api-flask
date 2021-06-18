@@ -3,7 +3,7 @@ import yaml
 from app_logging import AppLogger
 
 logger = AppLogger(__name__).get_logger()
-DEFAULT_CONFIG = "config.yaml"
+DEFAULT_CONFIG = "conf/config.yaml"
 
 class ConfigManager:
     _instance = None
@@ -17,7 +17,7 @@ class ConfigManager:
             with open(self.config_file, "r") as yml:
                 cfg = yaml.safe_load(yml)
             self.cfg = cfg
-            ConfigManager._instance = self
+            ConfigManager._instance = self        
 
     @staticmethod
     def getInstance():
@@ -29,3 +29,10 @@ class ConfigManager:
     @staticmethod
     def get(name, default=None):
         return ConfigManager.getInstance().cfg.get(name, default)
+
+    @staticmethod
+    def print_config():
+        logger.info("Configuration options:")
+        cfg = ConfigManager.getInstance().cfg
+        for k,v in cfg.items():
+            logger.info("\t {}: {}".format(k,v))
