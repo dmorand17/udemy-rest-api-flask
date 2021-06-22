@@ -2,8 +2,7 @@ from werkzeug.security import safe_str_cmp
 from user import User
 from app_logging import AppLogger
 
-logger = AppLogger(__name__).get_logger()
-
+logger = AppLogger.get_logger(__name__)
 
 def authenticate(username, password):
     user = User.find_by_username(username)

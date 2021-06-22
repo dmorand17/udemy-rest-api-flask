@@ -3,7 +3,8 @@ from connection.db import DbConnection
 from flask_restful import Resource, reqparse
 from app_logging import AppLogger
 
-logger = AppLogger(__name__).get_logger()
+logger = AppLogger.get_logger(__name__)
+
 
 class User:
     def __init__(self, _id, username, password):
@@ -39,15 +40,14 @@ class User:
 
             return user
 
+    def __repr__(self) -> str:
+        return f"id: {self.id}, username: {self.username}, password: {self.password}"
+
 
 class UserRegister(Resource):
     parser = reqparse.RequestParser()
-    parser.add_argument(
-        "username", type=str, required=True, help="This field cannot be left blank!"
-    )
-    parser.add_argument(
-        "password", type=str, required=True, help="This field cannot be left blank!"
-    )
+    parser.add_argument("username", type=str, required=True, help="This field cannot be left blank!")
+    parser.add_argument("password", type=str, required=True, help="This field cannot be left blank!")
 
     def post(self):
         data = UserRegister.parser.parse_args()

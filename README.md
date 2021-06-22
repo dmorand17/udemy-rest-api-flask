@@ -5,7 +5,7 @@ Rest APIs with Flask Udemy Training
 ## Docker
 ### Build image
 ```bash
-docker build --build-arg=start_dir=section4 -t udemy-rest-api .
+docker build --build-arg=start_dir=app -t udemy-rest-api .
 ```
 
 ### Run image

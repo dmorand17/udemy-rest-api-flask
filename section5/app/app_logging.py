@@ -4,38 +4,34 @@ from enum import Enum, auto
 from typing import List
 from logging.handlers import TimedRotatingFileHandler
 
-
 class LogHandler(Enum):
     FILE = auto()
     CONSOLE = auto()
 
-
 DEFAULT_FORMATTER = logging.Formatter(
-    "%(asctime)s — %(name)20s - %(levelname)s — %(message)s"
+    "%(asctime)s — %(name)18s - %(levelname)s — %(message)s"
 )
 DEFAULT_LOG_FILE = "logs/app.log"
 DEFAULT_HANDLERS = [LogHandler.FILE, LogHandler.CONSOLE]
 
-
 class AppLogger:
+
     def __init__(
         self,
         name,
         formatter=None,
         log_file=None,
-        log_level=logging.DEBUG,
+        level=logging.DEBUG,
         handlers: List[LogHandler] = DEFAULT_HANDLERS,
     ):
-        if formatter is None:
-            self.formatter = DEFAULT_FORMATTER
-        if log_file is None:
-            self.log_file = DEFAULT_LOG_FILE
+        self.formatter = DEFAULT_FORMATTER if formatter is None else formatter
+        self.log_file = DEFAULT_LOG_FILE if log_file is None else log_file
         self.logger = logging.getLogger(name)
         # with this pattern, it's rarely necessary to propagate the error up to parent
         self.logger.propagate = False
         self.handlers = handlers
 
-        self.set_log_level(log_level)
+        self.set_level(level)
         self._add_handlers()
 
     def _get_console_handler(self):
@@ -57,8 +53,9 @@ class AppLogger:
         for handler in self.handlers:
             self.logger.addHandler(handlers.get(handler)())
 
-    def set_log_level(self, log_level):
-        self.logger.setLevel(log_level)
+    def set_level(self, level):
+        self.logger.setLevel(level)
 
-    def get_logger(self):
-        return self.logger
+    @classmethod
+    def get_logger(cls, name, **kwargs):
+        return cls(name, **kwargs).logger
