@@ -20,3 +20,7 @@ if __name__ == "__main__":
     logger.info(f"jwt_secret: {jwt_secret}")
     user = User.find_by_username("douglas")
     logger.info(f"user: {user}")
+
+    currentdir = os.path.dirname(os.path.realpath(__file__))
+    parentdir = os.path.dirname(currentdir)
+    logger.info(f"currentdir: {currentdir}, parentdir: {parentdir}")

@@ -33,6 +33,19 @@ class Item(Resource):
             if row:
                 return {'item': {'id': row[0], 'name': row[1], 'price': row[2]}}
 
+    @classmethod
+    def insert(cls, item):
+        with DbConnection() as db:
+            query = "INSERT INTO items VALUES (NULL, ?, ?)"
+            db.cursor.execute(query, (item["name"], item["price"]))
+
+    @classmethod
+    def update(cls, item):
+        with DbConnection() as db:
+            query = "UPDATE items SET price=? WHERE name=?"
+            db.cursor.execute(query, (item["price"], item["name"]))
+
+
     @jwt_required()
     def post(self, name):
         if self.find_by_name(name):
@@ -42,31 +55,52 @@ class Item(Resource):
 
         # silent=True returns None if invalid Content-Type
         item = {"name": name, "price": data["price"]}
-        with DbConnection() as db:
-            query = "INSERT INTO items VALUES (NULL, ?, ?)"
-            db.cursor.execute(query, (item["name"], item["price"]))
+        try:
+            self.insert(item)
+        except:
+            return {"message": "An error occurred"}, 500
         return item, 201  # 201 = created, 202 = accepted
 
     @jwt_required()
     def delete(self, name):
-        global items
-        items = list(filter(lambda x: x["name"] != name), items)
-        return {"message": "Item deleted"}
+        with DbConnection() as db:
+            query = "DELETE FROM items WHERE name = ?"
+            db.cursor.execute(query, (name,))
+
+        return {"message": "Item deleted"}, 200
 
     # Create or Update Item
     @jwt_required()
     def put(self, name):
         data = Item.parser.parse_args()
-        item = next(filter(lambda x: x["name"] == name, items), None)
+        item = self.find_by_name(name)
+        updated_item = {"name": name, "price": data["price"]}
 
         if item is None:
-            item = {"name": name, "price": data["price"]}
-            items.append(item)
+            try:
+                self.insert(updated_item)
+            except:
+                return {"message": "An error occurred"}, 500
         else:
-            item.update(data)
-        return item
-
+            try:
+                self.update(updated_item)
+            except:
+                return {"message": "An error occurred"}, 500
+        return updated_item
 
 class ItemList(Resource):
     def get(self):
+        with DbConnection() as db:
+            query = "SELECT * FROM items"
+            result = db.cursor.execute(query)
+            results = result.fetchall()
+
+            items = []
+            for i in results:
+                items.append({
+                    'id':i[0],
+                    'name':i[1],
+                    'price':i[2]
+                })
+
         return {"items": items}, 200

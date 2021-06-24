@@ -5,18 +5,32 @@ from app_logging import AppLogger
 
 logger = AppLogger.get_logger(__name__)
 
-
 class User:
-    def __init__(self, _id, username, password):
+    def __init__(self, _id, username, password, email):
         self.id = _id
         self.username = username
         self.password = password
+        self.email = email
 
     @classmethod
     def find_by_username(cls, username):
         with DbConnection() as db:
             query = "SELECT * FROM users WHERE username = ?"
             result = db.cursor.execute(query, (username,))
+            row = result.fetchone()
+            if row:
+                user = cls(*row)
+            else:
+                logger.error("No user found!")
+                user = None
+
+            return user
+
+    @classmethod
+    def find_by_email(cls, email):
+        with DbConnection() as db:
+            query = "SELECT * FROM users WHERE email = ?"
+            result = db.cursor.execute(query, (email,))
             row = result.fetchone()
             if row:
                 user = cls(*row)
@@ -41,13 +55,14 @@ class User:
             return user
 
     def __repr__(self) -> str:
-        return f"id: {self.id}, username: {self.username}, password: {self.password}"
+        return f"id: {self.id}, username: {self.username}, email: {self.email}, password: {self.password}"
 
 
 class UserRegister(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument("username", type=str, required=True, help="This field cannot be left blank!")
     parser.add_argument("password", type=str, required=True, help="This field cannot be left blank!")
+    parser.add_argument("email", type=str, required=True, help="This field cannot be left blank!")
 
     def post(self):
         data = UserRegister.parser.parse_args()
@@ -55,6 +70,6 @@ class UserRegister(Resource):
             return {"message": "User already exists"}, 409
 
         with DbConnection() as db:
-            query = "INSERT INTO users VALUES (NULL, ?, ?)"
-            db.cursor.execute(query, (data["username"], data["password"]))
+            query = "INSERT INTO users VALUES (NULL, ?, ?, ?)"
+            db.cursor.execute(query, (data["username"], data["password"], data["email"]))
             return {"message": "User created successfully"}, 201
