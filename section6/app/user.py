@@ -1,7 +1,7 @@
-from app_logging import AppLogger
+from typing import Text
 from connection.db import DbConnection
 from flask_restful import Resource, reqparse
-from typing import Text
+from app_logging import AppLogger
 
 logger = AppLogger.get_logger(__name__)
 

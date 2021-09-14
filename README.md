@@ -14,7 +14,7 @@ docker run -e WS_PORT=8080 --env-file=.env -p 5050:8080 udemy-rest-api
 ```
 ### Run image (testing)
 ```bash
-docker run -it udemy-rest-api /bin/bash
+docker run -it udemy-rest-api /bin/bash 
 ```
 ## Rest-api-sections
 [Section code](https://github.com/schoolofcode-me/rest-api-sections)
