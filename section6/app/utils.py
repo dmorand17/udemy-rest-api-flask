@@ -1,8 +1,8 @@
 import os.path
 import sys
 
-class AppUtils():
-    
+
+class AppUtils:
     @staticmethod
     def path_exists(path):
         if not os.path.exists(path):

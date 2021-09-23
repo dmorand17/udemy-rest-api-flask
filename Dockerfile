@@ -5,16 +5,20 @@ FROM ubuntu:latest
 RUN apt-get update -y && \
     apt-get install -y python3-pip python-dev
 
-ARG start_dir
-ENV start_dir=${start_dir}
-RUN echo "Starting directory: $start_dir"
+ARG DB
+ENV DB=${DB}
+
+ARG PROJ_DIR
+ENV PROJ_DIR=${PROJ_DIR}
+RUN echo "Starting directory: $PROJ_DIR"
 
 # We copy just the requirements.txt first to leverage Docker cache
-COPY ${start_dir}/requirements.txt /app/requirements.txt
+COPY ${PROJ_DIR}/requirements.txt /app/requirements.txt
+COPY ${DB} /app
 
 WORKDIR /app
 RUN pip3 install -r requirements.txt
-COPY ${start_dir} /app
+COPY ${PROJ_DIR} /app
 
 # Use ENTRYPOINT to lock down the image to python only 
 # ENTRYPOINT ["/bin/echo","Hello"]

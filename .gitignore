@@ -11,3 +11,5 @@ __pycache__/
 
 # Configuration files
 config.yaml
+
+.env
