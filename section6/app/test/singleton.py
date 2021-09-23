@@ -5,7 +5,7 @@ parentdir = os.path.dirname(currentdir)
 sys.path.append(parentdir)
 
 # Import parent libs
-from app_logging import AppLogger
+from app_logger import AppLogger
 from config_manager import ConfigManager
 import logging
 from user import User

@@ -11,15 +11,13 @@ import os, sys
 # sys.path.append(parentdir)
 
 # Import parent libs
-from app_logging import AppLogger
+from app_logger import AppLogger
 from config_manager import ConfigManager
 from utils import AppUtils
 
 logger = AppLogger.get_logger(__name__)
 
-
 DEFAULT_DB = "data.db"
-DATABASE = ConfigManager.get("database", Path(__file__).parent / DEFAULT_DB)
 
 
 class DbInit:
@@ -46,7 +44,7 @@ class DbInit:
 
 class DbConnection:
     def __init__(self):
-        self.db_file = DATABASE
+        self.db_file = ConfigManager.get("database", Path(__file__).parent / DEFAULT_DB)
 
         # if not AppUtils.path_exists(DATABASE):
         #    logger.error("Unable to resolve database at {}, exiting.".format(DATABASE))

@@ -4,7 +4,7 @@ currentdir = os.path.dirname(os.path.realpath(__file__))
 parentdir = os.path.dirname(currentdir)
 sys.path.append(parentdir)
 
-from app_logging import AppLogger
+from app_logger import AppLogger
 from models.item import ItemModel
 from models.user import UserModel
 

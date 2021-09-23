@@ -1,6 +1,6 @@
 from werkzeug.security import safe_str_cmp
 from models.user import UserModel
-from app_logging import AppLogger
+from app_logger import AppLogger
 
 logger = AppLogger.get_logger(__name__)
 

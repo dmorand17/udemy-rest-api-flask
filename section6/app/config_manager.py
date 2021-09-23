@@ -1,30 +1,34 @@
 import yaml
-from app_logging import AppLogger
+import os, sys
+from app_logger import AppLogger
 
 logger = AppLogger.get_logger(__name__)
-DEFAULT_CONFIG = "conf/config.yaml"
 
 
 class ConfigManager:
     __instance = None
 
-    def __init__(self, config_file):
+    def __init__(self):
         if ConfigManager.__instance is not None:
             raise Exception("This class is a singleton!")
         else:
-            logger.info("Initializing ConfigManager")
+            self.config_file = os.environ.get("UDEMY_RESTAPI_CONFIG")
+            if self.config_file is None:
+                print(
+                    "No configuration found.  Ensure that 'UDEMY_RESTAPI_CONFIG' environment variable is set"
+                )
+                sys.exit(1)
             ConfigManager.__instance = self
-            self.config_file = config_file
-
+            logger.info("Initializing ConfigManager")
             with open(self.config_file, "r") as yml:
                 self.config = yaml.safe_load(yml)
 
     @staticmethod
-    def init(config_file=DEFAULT_CONFIG):
-        ConfigManager(config_file)
+    def init():
+        ConfigManager()
 
     @staticmethod
-    def getInstance(config_file=None):
+    def getInstance():
         return ConfigManager.__instance
 
     @staticmethod

@@ -2,7 +2,7 @@ from typing import Text
 from connection.db import DbConnection
 from flask_restful import Resource, reqparse
 from models.user import UserModel
-from app_logging import AppLogger
+from app_logger import AppLogger
 
 logger = AppLogger.get_logger(__name__)
 
