@@ -2,7 +2,6 @@ from flask import Flask, jsonify
 from flask.config import Config
 from flask_restful import Api
 from flask_jwt import JWT
-from config_manager import ConfigManager
 import os, sys
 from security import authenticate, identity as identity_function
 from resources.user import UserRegister
@@ -10,14 +9,16 @@ from app_logger import AppLogger
 from connection.db import DbInit
 from resources.item import Item, ItemList
 from datetime import timedelta
+from config_manager import ConfigManager
 import logging
 
 DEFAULT_PORT = 5050
 logger = AppLogger.get_logger(__name__)
-ConfigManager.init()
 
+ConfigManager.init()
 app = Flask(__name__)
 app.secret_key = os.environ.get("JWT_SECRET", ConfigManager.get("jwt_secret", "jose"))
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 api = Api(app)
 # app.config['JWT_AUTH_URL_RULE'] = '/login'
@@ -50,12 +51,15 @@ api.add_resource(UserRegister, "/register")
 
 # Server run
 if __name__ == "__main__":
-    logger.info(f"configmanager {ConfigManager.getInstance()}")
+    from connection.db import db
+
+    db.init_app(app)
     ConfigManager.print_config()
-    init_database = ConfigManager.get("init_database", False)
-    if init_database:
+
+    init_database = os.environ.get("INIT_DB")
+    if init_database == "1":
         logger.info("init_database triggered")
         DbInit.all()
 
     port = os.environ.get("WS_PORT", DEFAULT_PORT)
-    app.run(port=port, host="0.0.0.0", debug=True)
+    app.run(port=port, host="0.0.0.0")

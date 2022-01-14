@@ -16,7 +16,7 @@ DEFAULT_HANDLERS = [LogHandler.FILE, LogHandler.CONSOLE]
 class AppLogger:
     DEFAULT_LOG_FILE = "logs/app.log"
     DEFAULT_FORMATTER = logging.Formatter(
-        "%(asctime)s — %(name)18s - %(levelname)s — %(message)s"
+        "%(asctime)s — %(name)20s - [%(threadName)s] - %(levelname)s — %(message)s "
     )
 
     def __init__(

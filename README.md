@@ -1,18 +1,25 @@
 Rest APIs with Flask Udemy Training
 
 [Source code from Udemy course](https://github.com/tecladocode/python-refresher)
-
 ## Formatting code
 ```bash
 python3 -m black .
 ```
 
-## Testing locally
+## Local Testing
+Run the following from the root section folder (e.g. `section6`)
+1. Create a virtual environment (_if one doesn't exist already_) -> `mkvirtualenv udemy-rest-section6`
+2. Launch virtual environment -> `workon udemy-rest-section6`
+3. Launch application
 ```bash
 UDEMY_RESTAPI_CONFIG=conf/config.yaml python3 app/app.py
 ```
 ## Docker
+Perform the following steps to build a `section`
+1. Build Image
+2. Run
 ### Build image
+Run the following command from the root `section` folder (e.g. `section6`)
 ```bash
 docker build --build-arg=PROJ_DIR=app -t udemy-rest-api .
 ```
@@ -61,7 +68,7 @@ Most project folders have a `conf/config.yaml` file.  This can be used to config
 ```
 
 The database can be bootstrapped by running `python3 connection/db.py -i [all|users|items]`
-##
+## 
 ## Rest-api-sections
 [Section code](https://github.com/schoolofcode-me/rest-api-sections)
 

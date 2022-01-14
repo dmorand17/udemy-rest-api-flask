@@ -3,12 +3,7 @@ import argparse
 import yaml
 import pathlib
 from pathlib import Path
-
-import os, sys
-
-# currentdir = os.path.dirname(os.path.realpath(__file__))
-# parentdir = os.path.dirname(currentdir)
-# sys.path.append(parentdir)
+from flask_sqlalchemy import SQLAlchemy
 
 # Import parent libs
 from app_logger import AppLogger
@@ -18,6 +13,7 @@ from utils import AppUtils
 logger = AppLogger.get_logger(__name__)
 
 DEFAULT_DB = "data.db"
+db = SQLAlchemy()
 
 
 class DbInit:
@@ -81,6 +77,7 @@ def parse_args():
 
 
 if __name__ == "__main__":
+    ConfigManager.init()
     init_functions = {"all": DbInit.all, "users": DbInit.users, "items": DbInit.items}
 
     args = parse_args()

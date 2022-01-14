@@ -1,4 +1,4 @@
-from connection.db import DbConnection
+from connection.db import DbConnection, db
 from app_logger import AppLogger
 
 logger = AppLogger.get_logger(__name__)
@@ -6,7 +6,13 @@ logger = AppLogger.get_logger(__name__)
 #
 # Internal representation of Item
 #
-class ItemModel:
+class ItemModel(db.Model):
+    # sqlalchemy configuration
+    __tablename__ = "items"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80))
+    price = db.Column(db.Float(precision=2))
+
     def __init__(self, name, price, _id=None):
         self.id = _id
         self.name = name

@@ -1,4 +1,4 @@
-from connection.db import DbConnection
+from connection.db import DbConnection, db
 from app_logger import AppLogger
 
 logger = AppLogger.get_logger(__name__)
@@ -6,7 +6,14 @@ logger = AppLogger.get_logger(__name__)
 #
 # Internal representation of User
 #
-class UserModel:
+class UserModel(db.Model):
+    # sqlalchemy configuration
+    __tablename__ = "users"
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80))
+    password = db.Column(db.String(80))
+    email = db.Column(db.String(80))
+
     def __init__(self, _id, username, password, email):
         self.id = _id
         self.username = username

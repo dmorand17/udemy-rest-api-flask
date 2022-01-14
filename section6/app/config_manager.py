@@ -26,6 +26,7 @@ class ConfigManager:
     @staticmethod
     def init():
         ConfigManager()
+        logger.info("ConfigManager initialized")
 
     @staticmethod
     def getInstance():
