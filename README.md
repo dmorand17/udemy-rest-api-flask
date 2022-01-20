@@ -5,15 +5,33 @@ Rest APIs with Flask Udemy Training
 ```bash
 python3 -m black .
 ```
-
 ## Local Testing
 Run the following from the root section folder (e.g. `section6`)
-1. Create a virtual environment (_if one doesn't exist already_) -> `mkvirtualenv udemy-rest-section6`
-2. Launch virtual environment -> `workon udemy-rest-section6`
-3. Launch application
+
+1. Create a virtual environment (_if one doesn't exist already_)
+```bash
+mkvirtualenv udemy-rest-section6
+```
+
+1. Launch virtual environment
+```bash
+workon udemy-rest-section6
+```
+
+1. Init database _(if necessary)_
+```bash
+./bin/init-database [-i [users,items,all]]
+```
+
+1. Launch application
 ```bash
 UDEMY_RESTAPI_CONFIG=conf/config.yaml python3 app/app.py
 ```
+OR using server-debug script
+```bash
+./bin/server-debug
+```
+
 ## Docker
 Perform the following steps to build a `section`
 1. Build Image

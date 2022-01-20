@@ -17,12 +17,16 @@ logger = AppLogger.get_logger(__name__)
 
 ConfigManager.init()
 app = Flask(__name__)
-app.secret_key = os.environ.get("JWT_SECRET", ConfigManager.get("jwt_secret", "jose"))
+app.secret_key = os.environ.get(
+    "JWT_SECRET", ConfigManager.get("jwt_secret", "jose")
+)
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 api = Api(app)
 # app.config['JWT_AUTH_URL_RULE'] = '/login'
-app.config["JWT_EXPIRATION_DELTA"] = timedelta(seconds=3600)  # 1 hour expiration time
+app.config["JWT_EXPIRATION_DELTA"] = timedelta(
+    seconds=3600
+)  # 1 hour expiration time
 # app.logger.addHandler()
 
 for logr in (app.logger, logging.getLogger("werkzeug")):

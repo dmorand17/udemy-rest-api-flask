@@ -16,9 +16,15 @@ jwt = JWT(app, authenticate, identity)  # new endpont '/auth'
 
 items = []
 
+
 class Item(Resource):
     parser = reqparse.RequestParser()
-    parser.add_argument("price", type=float, required=True, help="This field cannot be left blank!")
+    parser.add_argument(
+        "price",
+        type=float,
+        required=True,
+        help="This field cannot be left blank!",
+    )
 
     @jwt_required()
     def get(self, name):
@@ -28,7 +34,9 @@ class Item(Resource):
     @jwt_required()
     def post(self, name):
         if next(filter(lambda x: x["name"] == name, items), None) is not None:
-            return {"message": f"An item with name {name} already exists."}, 400
+            return {
+                "message": f"An item with name {name} already exists."
+            }, 400
 
         data = Item.parser.parse_args()
 
@@ -61,6 +69,7 @@ class ItemList(Resource):
     def get(self):
         return {"items": items}, 200
 
+
 # API Endpoints
 api.add_resource(Item, "/item/<string:name>")
 api.add_resource(ItemList, "/items")
@@ -68,4 +77,4 @@ api.add_resource(ItemList, "/items")
 # Server run
 if __name__ == "__main__":
     port = os.environ.get("WS_PORT", DEFAULT_PORT)
-    app.run(port=port, host='0.0.0.0', debug=True)
+    app.run(port=port, host="0.0.0.0", debug=True)

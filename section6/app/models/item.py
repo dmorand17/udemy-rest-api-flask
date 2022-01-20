@@ -7,6 +7,7 @@ logger = AppLogger.get_logger(__name__)
 # Internal representation of Item
 #
 class ItemModel(db.Model):
+
     # sqlalchemy configuration
     __tablename__ = "items"
     id = db.Column(db.Integer, primary_key=True)

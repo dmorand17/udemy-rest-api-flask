@@ -16,16 +16,23 @@ get_pattern_files() {
     echo "$CHANGED_FILES" | { grep "${1}$" || true; }
 }
 
+PADDING="......................................"
+
 # Get all changed python files
 PY_FILES=$(get_pattern_files .py)
 
 # Filter out list to only check py files
-if [[ -n ${CHANGED_FILES} ]]; then  
-    
-    echo -e "${WHITEB}Checking python files via flake8...${RESET}\n"
+if [[ -n ${CHANGED_FILES} ]]; then
+    echo -e "${WHITEB}Checking python files via flake8...${RESET}"
     flake8 ${PY_FILES}
-    printf "%-25s %5s" "${WHITEB}black" "Passed${RESET}"
 
+    TITLE="flake8"
+    printf "%s%s %s\n" "$TITLE" "${PADDING:${#TITLE}}" "Passed"
+    #printf "%-25s %5s" "${WHITEB}flake8" "Passed${RESET}"
+
+    echo -e "${WHITEB}Checking python files via black...${RESET}"
     black --check ${PY_FILES}
-    printf "%-25s %5s" "${WHITEB}black" "Passed${RESET}"
+    TITLE="black"
+    printf "%s%s %s\n" "$TITLE" "${PADDING:${#TITLE}}" "Passed"
+    # printf "%-25s %5s" "${WHITEB}black" "Passed${RESET}"
 fi

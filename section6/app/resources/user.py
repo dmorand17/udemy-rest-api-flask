@@ -12,13 +12,22 @@ logger = AppLogger.get_logger(__name__)
 class UserRegister(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument(
-        "username", type=str, required=True, help="This field cannot be left blank!"
+        "username",
+        type=str,
+        required=True,
+        help="This field cannot be left blank!",
     )
     parser.add_argument(
-        "password", type=str, required=True, help="This field cannot be left blank!"
+        "password",
+        type=str,
+        required=True,
+        help="This field cannot be left blank!",
     )
     parser.add_argument(
-        "email", type=str, required=True, help="This field cannot be left blank!"
+        "email",
+        type=str,
+        required=True,
+        help="This field cannot be left blank!",
     )
 
     def post(self):

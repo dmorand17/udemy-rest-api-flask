@@ -7,7 +7,10 @@ from models.item import ItemModel
 class Item(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument(
-        "price", type=float, required=True, help="This field cannot be left blank!"
+        "price",
+        type=float,
+        required=True,
+        help="This field cannot be left blank!",
     )
 
     @jwt_required()
@@ -20,7 +23,9 @@ class Item(Resource):
     @jwt_required()
     def post(self, name):
         if ItemModel.find_by_name(name):
-            return {"message": f"An item with name {name} already exists."}, 400
+            return {
+                "message": f"An item with name {name} already exists."
+            }, 400
 
         data = Item.parser.parse_args()
 
@@ -28,7 +33,7 @@ class Item(Resource):
         item = ItemModel(name=name, price=data["price"])
         try:
             item.insert()
-        except:
+        except Exception:
             return {"message": "An error occurred"}, 500
         return item.json(), 201  # 201 = created, 202 = accepted
 
@@ -50,12 +55,12 @@ class Item(Resource):
         if item is None:
             try:
                 updated_item.insert()
-            except:
+            except Exception:
                 return {"message": "An error occurred"}, 500
         else:
             try:
                 updated_item.update()
-            except:
+            except Exception:
                 return {"message": "An error occurred"}, 500
         return updated_item.json(), 204
 

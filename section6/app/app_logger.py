@@ -27,8 +27,12 @@ class AppLogger:
         level=logging.DEBUG,
         handlers: List[LogHandler] = DEFAULT_HANDLERS,
     ):
-        self.formatter = AppLogger.DEFAULT_FORMATTER if formatter is None else formatter
-        self.log_file = AppLogger.DEFAULT_LOG_FILE if log_file is None else log_file
+        self.formatter = (
+            AppLogger.DEFAULT_FORMATTER if formatter is None else formatter
+        )
+        self.log_file = (
+            AppLogger.DEFAULT_LOG_FILE if log_file is None else log_file
+        )
         self.logger = logging.getLogger(name)
 
         # with this pattern, it's rarely necessary to propagate the error up to parent
@@ -64,7 +68,9 @@ class AppLogger:
             else AppLogger.DEFAULT_FORMATTER
         )
         log_file = (
-            kwargs["log_file"] if kwargs.get("log_file") else AppLogger.DEFAULT_LOG_FILE
+            kwargs["log_file"]
+            if kwargs.get("log_file")
+            else AppLogger.DEFAULT_LOG_FILE
         )
 
         file_handler = TimedRotatingFileHandler(log_file, when="midnight")

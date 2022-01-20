@@ -7,6 +7,7 @@ logger = AppLogger.get_logger(__name__)
 # Internal representation of User
 #
 class UserModel(db.Model):
+
     # sqlalchemy configuration
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)

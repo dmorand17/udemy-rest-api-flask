@@ -40,7 +40,9 @@ class DbInit:
 
 class DbConnection:
     def __init__(self):
-        self.db_file = ConfigManager.get("database", Path(__file__).parent / DEFAULT_DB)
+        self.db_file = ConfigManager.get(
+            "database", Path(__file__).parent / DEFAULT_DB
+        )
 
         # if not AppUtils.path_exists(DATABASE):
         #    logger.error("Unable to resolve database at {}, exiting.".format(DATABASE))
@@ -78,7 +80,11 @@ def parse_args():
 
 if __name__ == "__main__":
     ConfigManager.init()
-    init_functions = {"all": DbInit.all, "users": DbInit.users, "items": DbInit.items}
+    init_functions = {
+        "all": DbInit.all,
+        "users": DbInit.users,
+        "items": DbInit.items,
+    }
 
     args = parse_args()
     init = args.init
