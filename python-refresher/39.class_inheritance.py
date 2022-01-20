@@ -5,11 +5,12 @@ class Device:
         self.connected = True
 
     def __str__(self):
-        return f"Device: {self.name!r} ({self.connected_by})" 
+        return f"Device: {self.name!r} ({self.connected_by})"
 
     def disconnect(self):
         self.connected = False
         print("Disconnected")
+
 
 class Printer(Device):
     def __init__(self, name, connected_by, capacity):
@@ -27,11 +28,12 @@ class Printer(Device):
         print(f"Printing {pages} pages")
         self.remaining_pages -= pages
 
-printer = Device("printer","USB")
+
+printer = Device("printer", "USB")
 print(printer)
 printer.disconnect()
 
-new_printer = Printer("printer2","serial",500)
+new_printer = Printer("printer2", "serial", 500)
 new_printer.print_pages(25)
 print(new_printer)
 new_printer.disconnect()

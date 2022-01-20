@@ -49,6 +49,7 @@ print(search(friends, "Rolf Smith", finder=get_friend_name))
 
 # -- using lambdas since this can be simple enough --
 
+
 def search(sequence, expected, finder):
     for elem in sequence:
         if finder(elem) == expected:

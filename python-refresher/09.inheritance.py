@@ -9,9 +9,11 @@ class Student:
 
     @classmethod
     def friend(cls, origin, friend_name, *args, **kwargs):
-        return cls(friend_name,origin.school, *args, **kwargs)
+        return cls(friend_name, origin.school, *args, **kwargs)
+
 
 ##
+
 
 class WorkingStudent(Student):
     def __init__(self, name, school, salary, job_title):
@@ -21,7 +23,9 @@ class WorkingStudent(Student):
 
 
 anna = WorkingStudent("Anna", "Oxford", "50,000", "Software Developer")
-friend = WorkingStudent.friend(anna,"Greg",10000, job_title="Software Architect")
+friend = WorkingStudent.friend(
+    anna, "Greg", 10000, job_title="Software Architect"
+)
 
 print(anna.salary)
 print(friend.name)

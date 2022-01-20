@@ -1,4 +1,3 @@
-
 import functools
 
 user = {"username": "anna", "access_level": "user"}
@@ -19,7 +18,9 @@ def make_secure(access_level):
     return decorator
 
 
-@make_secure("admin")  # This runs the make_secure function, which returns decorator. Essentially the same to doing `@decorator`, which is what we had before.
+@make_secure(
+    "admin"
+)  # This runs the make_secure function, which returns decorator. Essentially the same to doing `@decorator`, which is what we had before.
 def get_admin_password():
     return "admin: 1234"
 

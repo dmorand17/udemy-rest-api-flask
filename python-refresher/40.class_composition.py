@@ -5,6 +5,7 @@ class BookShelf:
     def __str__(self):
         return f"BookShelf with {len(self.books)} books"
 
+
 class Book:
     def __init__(self, name):
         self.name = name
@@ -12,10 +13,11 @@ class Book:
     def __str__(self):
         return f"Book {self.name}"
 
+
 book = Book("Harry Potter")
 book2 = Book("Ready Player One")
 book3 = Book("Hobbit")
 
-bookshelf = BookShelf(book,book2,book3)
+bookshelf = BookShelf(book, book2, book3)
 
 print(bookshelf)

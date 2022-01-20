@@ -1,7 +1,7 @@
-
 import functools
 
 user = {"username": "anna", "access_level": "user"}
+
 
 def make_secure(func):
     @functools.wraps(func)
@@ -13,6 +13,7 @@ def make_secure(func):
 
     return secure_function
 
+
 @make_secure
 def get_password(panel):
     if panel == "admin":
@@ -20,8 +21,10 @@ def get_password(panel):
     elif panel == "billing":
         return "super secure password"
 
+
 @make_secure
 def get_dashboard_password():
     return "user: user_password"
+
 
 print(get_password("billing"))
