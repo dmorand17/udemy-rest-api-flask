@@ -26,13 +26,13 @@ if [[ -n ${CHANGED_FILES} ]]; then
     echo -e "${WHITEB}Checking python files via flake8...${RESET}"
     flake8 ${PY_FILES}
 
-    TITLE="flake8"
-    printf "%s%s %s\n" "$TITLE" "${PADDING:${#TITLE}}" "Passed"
+    # TITLE="flake8"
+    # printf "%s%s %s\n" "$TITLE" "${PADDING:${#TITLE}}" "Passed"
     #printf "%-25s %5s" "${WHITEB}flake8" "Passed${RESET}"
 
     echo -e "${WHITEB}Checking python files via black...${RESET}"
     black --check ${PY_FILES}
-    TITLE="black"
-    printf "%s%s %s\n" "$TITLE" "${PADDING:${#TITLE}}" "Passed"
+    # TITLE="black"
+    # printf "%s%s %s\n" "$TITLE" "${PADDING:${#TITLE}}" "Passed"
     # printf "%-25s %5s" "${WHITEB}black" "Passed${RESET}"
 fi
