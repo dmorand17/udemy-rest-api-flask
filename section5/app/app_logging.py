@@ -4,9 +4,11 @@ from enum import Enum, auto
 from typing import List
 from logging.handlers import TimedRotatingFileHandler
 
+
 class LogHandler(Enum):
     FILE = auto()
     CONSOLE = auto()
+
 
 DEFAULT_FORMATTER = logging.Formatter(
     "%(asctime)s — %(name)18s - %(levelname)s — %(message)s"
@@ -14,8 +16,8 @@ DEFAULT_FORMATTER = logging.Formatter(
 DEFAULT_LOG_FILE = "logs/app.log"
 DEFAULT_HANDLERS = [LogHandler.FILE, LogHandler.CONSOLE]
 
-class AppLogger:
 
+class AppLogger:
     def __init__(
         self,
         name,

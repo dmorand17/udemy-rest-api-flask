@@ -5,6 +5,7 @@ from typing import Text
 
 logger = AppLogger.get_logger(__name__)
 
+
 class User:
     def __init__(self, _id, username, password, email):
         self.id = _id
@@ -60,9 +61,24 @@ class User:
 
 class UserRegister(Resource):
     parser = reqparse.RequestParser()
-    parser.add_argument("username", type=str, required=True, help="This field cannot be left blank!")
-    parser.add_argument("password", type=str, required=True, help="This field cannot be left blank!")
-    parser.add_argument("email", type=str, required=True, help="This field cannot be left blank!")
+    parser.add_argument(
+        "username",
+        type=str,
+        required=True,
+        help="This field cannot be left blank!",
+    )
+    parser.add_argument(
+        "password",
+        type=str,
+        required=True,
+        help="This field cannot be left blank!",
+    )
+    parser.add_argument(
+        "email",
+        type=str,
+        required=True,
+        help="This field cannot be left blank!",
+    )
 
     def post(self):
         data = UserRegister.parser.parse_args()
@@ -71,5 +87,7 @@ class UserRegister(Resource):
 
         with DbConnection() as db:
             query = "INSERT INTO users VALUES (NULL, ?, ?, ?)"
-            db.cursor.execute(query, (data["username"], data["password"], data["email"]))
+            db.cursor.execute(
+                query, (data["username"], data["password"], data["email"])
+            )
             return {"message": "User created successfully"}, 201

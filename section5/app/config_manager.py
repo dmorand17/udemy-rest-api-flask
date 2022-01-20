@@ -5,6 +5,7 @@ logger = AppLogger.get_logger(__name__)
 
 DEFAULT_CONFIG = "conf/config.yaml"
 
+
 class ConfigManager:
     __instance = None
 
@@ -13,13 +14,12 @@ class ConfigManager:
             raise Exception("This class is a singleton!")
         else:
             logger.info("Initializing ConfigManager")
-            ConfigManager.__instance = self        
+            ConfigManager.__instance = self
             self.config_file = config_file
-            
+
             with open(self.config_file, "r") as yml:
                 cfg = yaml.safe_load(yml)
             self.cfg = cfg
-
 
     @staticmethod
     def getInstance():
@@ -36,8 +36,8 @@ class ConfigManager:
     def print_config():
         logger.info("Configuration options:")
         cfg = ConfigManager.getInstance().cfg
-        for k,v in cfg.items():
+        for k, v in cfg.items():
             logger.info(f"    {k}: {v}")
 
     def __getattr__(self, name):
-        return getattr(self._instance)            
+        return getattr(self._instance)

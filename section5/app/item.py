@@ -2,16 +2,22 @@ from flask_restful import Resource, reqparse
 from flask_jwt import jwt_required
 from connection.db import DbConnection
 
+
 class Item(Resource):
     parser = reqparse.RequestParser()
-    parser.add_argument("price", type=float, required=True, help="This field cannot be left blank!")
+    parser.add_argument(
+        "price",
+        type=float,
+        required=True,
+        help="This field cannot be left blank!",
+    )
 
     @jwt_required()
     def get(self, name):
         item = self.find_by_name(name)
         if item:
             return item, 200
-        return {'message': 'item not found'}, 404
+        return {"message": "item not found"}, 404
 
     @classmethod
     def find_by_name(cls, name):
@@ -19,9 +25,11 @@ class Item(Resource):
             query = "SELECT * FROM items WHERE name = ?"
             result = db.cursor.execute(query, (name,))
             row = result.fetchone()
-            
+
             if row:
-                return {'item': {'id': row[0], 'name': row[1], 'price': row[2]}}
+                return {
+                    "item": {"id": row[0], "name": row[1], "price": row[2]}
+                }
 
     @classmethod
     def find_by_id(cls, _id):
@@ -29,9 +37,11 @@ class Item(Resource):
             query = "SELECT * FROM items WHERE id = ?"
             result = db.cursor.execute(query, (_id,))
             row = result.fetchone()
-            
+
             if row:
-                return {'item': {'id': row[0], 'name': row[1], 'price': row[2]}}
+                return {
+                    "item": {"id": row[0], "name": row[1], "price": row[2]}
+                }
 
     @classmethod
     def insert(cls, item):
@@ -45,11 +55,12 @@ class Item(Resource):
             query = "UPDATE items SET price=? WHERE name=?"
             db.cursor.execute(query, (item["price"], item["name"]))
 
-
     @jwt_required()
     def post(self, name):
         if self.find_by_name(name):
-            return {"message": f"An item with name {name} already exists."}, 400
+            return {
+                "message": f"An item with name {name} already exists."
+            }, 400
 
         data = Item.parser.parse_args()
 
@@ -57,7 +68,7 @@ class Item(Resource):
         item = {"name": name, "price": data["price"]}
         try:
             self.insert(item)
-        except:
+        except Exception:
             return {"message": "An error occurred"}, 500
         return item, 201  # 201 = created, 202 = accepted
 
@@ -79,14 +90,15 @@ class Item(Resource):
         if item is None:
             try:
                 self.insert(updated_item)
-            except:
+            except Exception:
                 return {"message": "An error occurred"}, 500
         else:
             try:
                 self.update(updated_item)
-            except:
+            except Exception:
                 return {"message": "An error occurred"}, 500
         return updated_item
+
 
 class ItemList(Resource):
     def get(self):
@@ -94,13 +106,9 @@ class ItemList(Resource):
             query = "SELECT * FROM items"
             result = db.cursor.execute(query)
             results = result.fetchall()
-            
+
             items = []
             for i in results:
-                items.append({
-                    'id':i[0],
-                    'name':i[1],
-                    'price':i[2]
-                })
+                items.append({"id": i[0], "name": i[1], "price": i[2]})
 
         return {"items": items}, 200

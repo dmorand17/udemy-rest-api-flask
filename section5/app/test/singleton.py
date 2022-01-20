@@ -9,7 +9,9 @@ from config_manager import ConfigManager
 import logging
 from user import User
 
-logger = AppLogger.get_logger(__name__, level=logging.INFO, log_file="test.log")
+logger = AppLogger.get_logger(
+    __name__, level=logging.INFO, log_file="test.log"
+)
 
 if __name__ == "__main__":
     logger.info("info statement")
