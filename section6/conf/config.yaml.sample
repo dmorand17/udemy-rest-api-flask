@@ -1,0 +1,4 @@
+---
+  database: data.db
+  WS_PORT: 8888
+  JWT_SECRET: somethinggoeshere

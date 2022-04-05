@@ -9,6 +9,7 @@ WHITEB='\033[1;37m'
 
 exe() { echo "\$ $@" ; "$@" ; }
 
+# ACMR = added/copied/modified/renamed
 CHANGED_FILES="$(git diff --name-only --cached --diff-filter=ACMR -- '*.py')"
 
 # Get only changed files that match our file suffix pattern
@@ -17,7 +18,6 @@ get_pattern_files() {
 }
 
 PADDING="......................................"
-
 # Get all changed python files
 PY_FILES=$(get_pattern_files .py)
 

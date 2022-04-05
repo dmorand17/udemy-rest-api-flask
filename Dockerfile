@@ -1,4 +1,5 @@
-FROM ubuntu:latest
+# Should update this to use python:3 instead
+FROM python:3.9-slim-buster
 
 # Reference - https://runnable.com/docker/python/dockerize-your-flask-application
 

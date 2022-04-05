@@ -13,17 +13,17 @@ Run the following from the root section folder (e.g. `section6`)
 mkvirtualenv udemy-rest-section6
 ```
 
-1. Launch virtual environment
+2. Launch virtual environment
 ```bash
 workon udemy-rest-section6
 ```
 
-1. Init database _(if necessary)_
+3. Init database _(if necessary)_
 ```bash
 ./bin/init-database [-i [users,items,all]]
 ```
 
-1. Launch application
+4. Launch application
 ```bash
 UDEMY_RESTAPI_CONFIG=conf/config.yaml python3 app/app.py
 ```
@@ -31,7 +31,6 @@ OR using server-debug script
 ```bash
 ./bin/server-debug
 ```
-
 ## Docker
 Perform the following steps to build a `section`
 1. Build Image
@@ -39,16 +38,17 @@ Perform the following steps to build a `section`
 ### Build image
 Run the following command from the root `section` folder (e.g. `section6`)
 ```bash
-docker build --build-arg=PROJ_DIR=app -t udemy-rest-api .
+docker build --build-arg=PROJ_DIR=app -t udemy-rest-api:latest .
 ```
 ### Run
 ```bash
 docker run -d \
+  --label "udemy-rest-api" \
   --env-file=.env \
-  -p 5050:5050 \
-  -v ~/personal/udemy-rest-api-flask/section6/logs:/app/logs \
-  -v ~/personal/udemy-rest-api-flask/section6/conf:/app/conf \
-  -v ~/personal/udemy-rest-api-flask/section6/data.db:/app/data.db \
+  -p 8888:8888 \
+  -v $(pwd)/section6/logs:/app/logs \
+  -v $(pwd)/section6/conf:/app/conf \
+  -v $(pwd)/section6/data.db:/app/data.db \
   udemy-rest-api
 ```
 
@@ -56,16 +56,16 @@ docker run -d \
 #### Run image (local debugging)
 ```bash
 docker run -d \
-  -e WS_PORT=8080 \
+  --label "udemy-rest-api" \
   --env-file=.env \
   -p 5050:8080 \
-  -v ~/personal/udemy-rest-api-flask/section6/app:/app \
-  -v ~/personal/udemy-rest-api-flask/section6/logs:/app/logs \
-  -v ~/personal/udemy-rest-api-flask/section6/conf:/app/conf \
-  -v ~/personal/udemy-rest-api-flask/section6/data.db:/app/data.db \
+  -v $(pwd)/section6/app:/app \
+  -v $(pwd)/section6/logs:/app/logs \
+  -v $(pwd)/section6/conf:/app/conf \
+  -v $(pwd)/section6/data.db:/app/data.db \
   udemy-rest-api
 ```
-#### Run image (console access)
+#### Run image w/console access
 ```bash
 docker run -it udemy-rest-api /bin/bash
 ```
@@ -73,7 +73,8 @@ docker run -it udemy-rest-api /bin/bash
 ### Cleanup
 Kill running containers and remove unused images
 ```bash
-docker container kill $(docker ps -q)
+docker container kill $(docker ps --filter "label=udemy-rest-api" -q)
+docker image rm
 docker system prune -f
 ```
 

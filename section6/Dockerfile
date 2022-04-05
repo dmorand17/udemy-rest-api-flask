@@ -1,10 +1,7 @@
-FROM ubuntu:latest
+FROM python:3.9-slim-buster
 
 # Reference - https://runnable.com/docker/python/dockerize-your-flask-application
-
-RUN apt-get update -y && \
-    apt-get install -y python3-pip python-dev
-
+LABEL maintainer="Doug Morand"
 ARG PROJ_DIR
 ENV PROJ_DIR=${PROJ_DIR}
 RUN echo "Starting directory: $PROJ_DIR"
@@ -20,6 +17,6 @@ COPY ${PROJ_DIR} /app
 # ENTRYPOINT ["/bin/echo","Hello"]
 # CMD ["World"]
 
-#ENTRYPOINT [ "python3" ]
+ENTRYPOINT [ "python3","app.py"]
 
-CMD [ "python3", "app.py" ]
+#CMD [ "python3", "app.py" ]

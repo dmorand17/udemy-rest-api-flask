@@ -1,15 +1,16 @@
+import os
 from flask import Flask, jsonify
 from flask.config import Config
 from flask_restful import Api
 from flask_jwt import JWT
-import os, sys
 from security import authenticate, identity as identity_function
-from resources.user import UserRegister
 from app_logger import AppLogger
-from connection.db import DbInit
+from resources.user import UserRegister
 from resources.item import Item, ItemList
+from resources.store import Store, StoreList
 from datetime import timedelta
 from config_manager import ConfigManager
+from pathlib import Path
 import logging
 
 DEFAULT_PORT = 5050
@@ -20,9 +21,13 @@ app = Flask(__name__)
 app.secret_key = os.environ.get(
     "JWT_SECRET", ConfigManager.get("jwt_secret", "jose")
 )
+
+db_path = Path("../data.db")
+app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{db_path}"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 api = Api(app)
+
 # app.config['JWT_AUTH_URL_RULE'] = '/login'
 app.config["JWT_EXPIRATION_DELTA"] = timedelta(
     seconds=3600
@@ -36,9 +41,23 @@ for logr in (app.logger, logging.getLogger("werkzeug")):
 # config JWT auth key name to be 'email' instead of default 'username'
 app.config["JWT_AUTH_USERNAME_KEY"] = "email"
 
+
+@app.before_first_request
+def create_tables():
+    db.create_all()
+
+
 jwt = JWT(app, authenticate, identity_function)  # new endpont '/auth'
 # Requires Authorization header
 #   JWT <token>
+
+# API Endpoints
+api.add_resource(Store, "/store/<string:name>")
+api.add_resource(Item, "/item/<string:name>")
+api.add_resource(ItemList, "/items")
+api.add_resource(StoreList, "/stores")
+
+api.add_resource(UserRegister, "/register")
 
 
 @jwt.auth_response_handler
@@ -48,22 +67,15 @@ def customized_response_handler(access_token, identity):
     )
 
 
-# API Endpoints
-api.add_resource(Item, "/item/<string:name>")
-api.add_resource(ItemList, "/items")
-api.add_resource(UserRegister, "/register")
-
 # Server run
+# This must be run using - UDEMY_RESTAPI_CONFIG=conf/config.yaml python3 app/app.py
 if __name__ == "__main__":
-    from connection.db import db
+    from db import db
 
     db.init_app(app)
+
+    logger.info("Initialized SQLAlchemy")
     ConfigManager.print_config()
 
-    init_database = os.environ.get("INIT_DB")
-    if init_database == "1":
-        logger.info("init_database triggered")
-        DbInit.all()
-
-    port = os.environ.get("WS_PORT", DEFAULT_PORT)
+    port = ConfigManager.get("WS_PORT", DEFAULT_PORT)
     app.run(port=port, host="0.0.0.0")

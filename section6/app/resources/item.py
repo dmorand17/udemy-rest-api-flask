@@ -1,6 +1,5 @@
 from flask_restful import Resource, reqparse
 from flask_jwt import jwt_required
-from connection.db import DbConnection
 from models.item import ItemModel
 
 
@@ -11,6 +10,12 @@ class Item(Resource):
         type=float,
         required=True,
         help="This field cannot be left blank!",
+    )
+    parser.add_argument(
+        "store_id",
+        type=int,
+        required=True,
+        help="Every item needs a store_id",
     )
 
     @jwt_required()
@@ -30,18 +35,18 @@ class Item(Resource):
         data = Item.parser.parse_args()
 
         # silent=True returns None if invalid Content-Type
-        item = ItemModel(name=name, price=data["price"])
+        item = ItemModel(name=name, **data)
         try:
-            item.insert()
+            item.upsert()
         except Exception:
             return {"message": "An error occurred"}, 500
         return item.json(), 201  # 201 = created, 202 = accepted
 
     @jwt_required()
     def delete(self, name):
-        with DbConnection() as db:
-            query = "DELETE FROM items WHERE name = ?"
-            db.cursor.execute(query, (name,))
+        item = ItemModel.find_by_name(name)
+        if item:
+            item.delete()
 
         return {"message": "Item deleted"}, 200
 
@@ -50,30 +55,27 @@ class Item(Resource):
     def put(self, name):
         data = Item.parser.parse_args()
         item = ItemModel.find_by_name(name)
-        updated_item = ItemModel(name=name, price=data["price"])
 
         if item is None:
             try:
-                updated_item.insert()
+                item = ItemModel(name, **data)
             except Exception:
                 return {"message": "An error occurred"}, 500
         else:
             try:
-                updated_item.update()
+                item.price = data["price"]
             except Exception:
                 return {"message": "An error occurred"}, 500
-        return updated_item.json(), 204
+
+        item.upsert()
+        return item.json(), 204
 
 
 class ItemList(Resource):
     def get(self):
-        with DbConnection() as db:
-            query = "SELECT * FROM items"
-            result = db.cursor.execute(query)
-            results = result.fetchall()
+        return {"items": [item.json() for item in ItemModel.query.all()]}, 200
 
-            items = []
-            for i in results:
-                items.append({"id": i[0], "name": i[1], "price": i[2]})
-
-        return {"items": items}, 200
+        # with lambda
+        # return {
+        #     "items": list(map(lambda x: x.json(), ItemModel.query.all()))
+        # }, 200
