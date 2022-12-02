@@ -13,5 +13,5 @@ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 # nvm install --lts
 
 # Setup git user.email
-git config --global user.email "dmorand@gmail.com"
-git config --global user.name "Doug Morand"
+git config user.email "dmorand@gmail.com"
+# git config --global user.name "Doug Morand"
