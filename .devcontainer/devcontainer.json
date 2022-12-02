@@ -8,7 +8,7 @@
   },
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
   "workspaceFolder": "/workspace",
-  "postCreateCommand": "./devcontainer-postInstall.sh",
+  "postCreateCommand": "git config --global --add safe.directory ${containerWorkspaceFolder} && ./devcontainer-postInstall.sh",
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
       "version": "lts",
