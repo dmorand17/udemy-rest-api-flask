@@ -1,0 +1,68 @@
+{
+  "name": "Udemy-rest-api-flask",
+  "build": {
+    "dockerfile": "Dockerfile.dev",
+    "context": "..",
+    //Update 'VARIANT' to pick a Python version: 3, 3.6, 3.7, 3.8
+    "args": { "VARIANT": "3.10" }
+  },
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
+  "workspaceFolder": "/workspace",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "lts",
+      "nodeGypDependencies": true
+    },
+    // Install common utilities
+    "ghcr.io/devcontainers/features/common-utils:1": {
+      "installZsh": true,
+      "installOhMyZsh": true,
+      "upgradePackages": true,
+      "username": "vscode",
+      "uid": "1000",
+      "gid": "1000"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "editor.formatOnSave": true,
+        "prettier.printWidth": 120,
+        "python.defaultInterpreterPath": "python3",
+        "python.formatting.blackArgs": ["--line-length=88"],
+        "python.formatting.provider": "black",
+        "python.languageServer": "Pylance",
+        "python.linting.flake8Args": ["--ignore=E501"],
+        "python.linting.flake8Enabled": true,
+        "workbench.colorTheme": "Dracula",
+        "workbench.editor.enablePreview": false,
+        "workbench.iconTheme": "material-icon-theme",
+        "workbench.tree.indent": 12,
+        "[python]": {
+          "editor.codeActionsOnSave": {
+            "source.organizeImports": true
+          },
+          "editor.tabSize": 4,
+          "editor.wordBasedSuggestions": false
+        },
+        "terminal.integrated.copyOnSelection": true,
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "terminal.integrated.profiles.linux": {
+          "zsh": {
+            "path": "/usr/bin/zsh"
+          },
+          "bash": {
+            "path": "/usr/bin/bash"
+          }
+        }
+      },
+      "extensions": [
+        "mechatroner.rainbow-csv",
+        "pkief.material-icon-theme",
+        "dracula-theme.theme-dracula",
+        "esbenp.prettier-vscode",
+        "ms-python.python"
+      ]
+    }
+  }
+}
