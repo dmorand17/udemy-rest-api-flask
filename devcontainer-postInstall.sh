@@ -11,3 +11,6 @@ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 # export NVM_DIR="$HOME/.nvm"
 # [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 # nvm install --lts
+
+git config user.email "dmorand@gmail.com"
+git config user.name "Doug Morand"
