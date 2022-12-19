@@ -8,7 +8,7 @@ for char in my_variable:
 my_list = [1, 2, 3, 4, 5]
 
 for num in my_list:
-    print(num ** 2)
+    print(num**2)
 
 user_wants_number = True
 while user_wants_number:
