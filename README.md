@@ -10,12 +10,20 @@ Create virtual environment
 
 ```bash
 python -m venv .venv
+source .venv/bin/activate
+pip3 install -r requirements.txt
 ```
 
 ## Build
 
 ```bash
-docker build -t flask-api .
+docker build -t flask-api --build-arg PROJ_DIR=<directory> .
+```
+
+_Example_
+
+```bash
+docker build -t flask-api --build-arg PROJ_DIR=04-smorest-sqlalchemy .
 ```
 
 ## Run
@@ -23,17 +31,26 @@ docker build -t flask-api .
 ### PROD mode
 
 ```bash
-docker run -dp 5000:5000 flask-smorest-api
+docker run -dp 5000:5000 flask-api
 ```
 
 ### DEBUG mode
 
 ```bash
+# Change into project directory
+cd 04-smorest-sqlalchemy
+
 docker run -d -p 5000:5000 \
---label "flask-smorest-api" \
+--label "flask-api" \
 -w /app \
 -v "$(pwd):/app" \
-flask-smorest-api
+flask-api
+```
+
+**Tail logs**
+
+```bash
+docker logs -f $(docker ps -q --filter "label=flask-api")
 ```
 
 ## Formatting code
