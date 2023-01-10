@@ -58,12 +58,3 @@ class ItemList(MethodView):
             abort(500, message="An error occurred while inserting the item")
 
         return item
-
-    @blp.arguments(ItemUpdateSchema)
-    @blp.response(200, ItemSchema)
-    def put(self, item_data, item_id):
-        try:
-            item = items[item_id]
-            item |= item_data  # in-place update of dictionary
-        except KeyError:
-            abort(404, "Item not found!")
