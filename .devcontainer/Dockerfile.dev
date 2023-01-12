@@ -5,3 +5,12 @@ FROM mcr.microsoft.com/vscode/devcontainers/python:${VARIANT}
 # [Optional] Uncomment this section to install additional OS packages.
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
   && apt-get -y install vim jq ripgrep ssh
+
+USER vscode
+WORKDIR /home/vscode
+
+ENV HOME /home/vscode
+
+# Install FZF
+RUN git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf \
+    && ~/.fzf/install --all
