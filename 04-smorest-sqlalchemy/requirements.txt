@@ -13,4 +13,4 @@ pyparsing==3.0.9
 python-dotenv==0.21.0
 SQLAlchemy==1.4.45
 webargs==8.2.0
-Werkzeug==2.2.2
+Werkzeug==2.2.3
